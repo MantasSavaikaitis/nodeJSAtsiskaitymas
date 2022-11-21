@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../../contexts/userContext';
 
-function Register() {
+function Register({ setLogin }) {
 
   const username = useRef();
   const password1 = useRef();
@@ -12,7 +12,8 @@ function Register() {
   function registerAttempt() {
     if (password1.current.value === password2.current.value) {
       socket.emit('register', { password: password1.current.value, username: username.current.value })
-    }
+      setLogin(true);
+    } else connObj.connection.setError('passwords does not match');
   }
 
   return (

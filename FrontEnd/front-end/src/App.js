@@ -29,6 +29,7 @@ function App() {
   const [connection, setConnection] = useState({
     socket,
     token: {},
+    setError,
   });
 
   // auction
