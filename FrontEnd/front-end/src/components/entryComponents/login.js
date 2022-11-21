@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../userContext';
+import { UserContext } from '../../contexts/userContext';
 
 function Login() {
 
   const connObj = useContext(UserContext);
   const socket = connObj.connection.socket;
-  const [error, setError] = useState('');
-
   const nav = useNavigate();
-
   const username = useRef();
   const password = useRef();
 
@@ -20,20 +17,10 @@ function Login() {
         socket,
         token,
       });
+      connObj.connection.socket.emit('listRequest');
       nav('/auction');
     });
   }
-
-  socket.on('error', (errObj) => {
-    const newErr = { msg: errObj.txt };
-    setError(newErr.msg);
-  })
-
-  useEffect(() => {
-    if (error !== '') alert(error);
-    setError('');
-  }, [error]);
-
   return (
     <div>
       <input type="text" placeholder='Username' ref={username} />

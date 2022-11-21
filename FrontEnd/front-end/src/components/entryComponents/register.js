@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { UserContext } from '../../userContext';
+import { UserContext } from '../../contexts/userContext';
 
 function Register() {
-
-  const [error, setError] = useState('');
 
   const username = useRef();
   const password1 = useRef();
@@ -16,16 +14,6 @@ function Register() {
       socket.emit('register', { password: password1.current.value, username: username.current.value })
     }
   }
-
-  socket.on('error', (errObj) => {
-    const newErr = { msg: errObj.txt };
-    setError(newErr.msg);
-  })
-
-  useEffect(() => {
-    if (error !== '') alert(error);
-    setError('');
-  }, [error]);
 
   return (
     <div>

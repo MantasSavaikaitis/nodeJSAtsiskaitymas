@@ -1,4 +1,8 @@
 /* common css ================= */
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -8,4 +12,11 @@
 
 /* auction page css=============== */
 
-
+.singleBidHistory {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 20px;
+  width: 200px;
+  height: 100%;
+  background-image: linear-gradient( to bottom right, rgb(22, 92, 22) , rgb(238, 0, 255));
+}

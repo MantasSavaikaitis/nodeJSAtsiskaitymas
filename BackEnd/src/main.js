@@ -8,11 +8,12 @@ const http = require('http');
 const { Server } = require('socket.io')
 const dotenv = require('dotenv').config()
 const mongoose = require('mongoose');
-const { UserModel } = require('./schemas');
+const { UserModel, ItemModel, BidHistoryModel } = require('./schemas');
 const { errorEmit } = require('./functions');
 
-const onlineArray = [];
+let onlineArray = [];
 const httpServer = http.createServer(app);
+
 
 async function dbConnect(link) {
   try {
@@ -32,8 +33,7 @@ const io = new Server(httpServer, {
 });
 
 function logout(token) {
-  console.log('user disconnected', token.id);
-  onlineArray.splice(onlineArray.indexOf((x) => x.socket === token.socket), 1);
+  onlineArray = onlineArray.filter((x) => x.socket !== token)
 }
 
 app.use(cors());
@@ -79,9 +79,52 @@ io.on('connection', (socket) => {
       .catch((err) => errorEmit(socket, err));
   });
 
+  socket.on('listRequest', async () => {
+    const arr = await ItemModel.find();
+    // { status: { $all: true } }
+    socket.emit('listEmit', (arr ? arr : [{}]));
+  });
+
+  socket.on('listingSubmit', (submitObj) => {
+    const addListing = new ItemModel(submitObj);
+    // addListing.bidHistory = new BidHistoryModel({})
+    addListing.save();
+  });
+
+  socket.on('reqSnglItem', (id) => {
+    ItemModel.findOne({ _id: { $eq: id } })
+      .then((item) => {
+        if (item) {
+          console.log('render');
+          socket.emit('snglItemEmit', item)
+        }
+        else throw new Error('Issue with a listing')
+      })
+      .catch((err) => errorEmit(socket, err));
+  });
+
+  socket.on('attemptBid', async (bidObj) => {
+    const item = {
+      bidBy: bidObj.bidBy,
+      bidAmmount: bidObj.bidAmmount,
+      bidDate: bidObj.bidDate,
+    }
+    try {
+      if (await ItemModel.findOne({ _id: { $eq: bidObj.id } }).then(x => x.currentBid < item.bidAmmount)) {
+        await ItemModel.findOneAndUpdate({ _id: { $eq: bidObj.id } }, { $push: { bidHistory: item }, currentBid: item.bidAmmount, });
+      } else throw new Error('bid is too low');
+    } catch (error) {
+      errorEmit(socket, error);
+    }
+
+
+  });
+
   socket.on('logout', () => logout(socket.id));
   socket.on('disconnect', () => logout(socket.id));
 });
+
+
 
 
 
