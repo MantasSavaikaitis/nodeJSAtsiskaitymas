@@ -1,5 +1,16 @@
 const { mongoose } = require("mongoose");
+const Joi = require('joi');
 
+const valschema = Joi.object({
+  postedBy: Joi.string(),
+  image: Joi.string().required(),
+  title: Joi.string().required(),
+  time: Joi.date(),
+  currentBid: Joi.number(),
+  startingPrice: Joi.number().required(),
+  status: Joi.boolean(),
+  auctionDuration: Joi.date(),
+})
 
 const Schema = mongoose.Schema;
 
@@ -36,4 +47,5 @@ module.exports = {
   UserModel,
   ItemModel,
   BidHistoryModel,
+  valschema,
 }

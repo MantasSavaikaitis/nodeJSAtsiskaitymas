@@ -8,7 +8,7 @@ const http = require('http');
 const { Server } = require('socket.io')
 const dotenv = require('dotenv').config()
 const mongoose = require('mongoose');
-const { UserModel, ItemModel, BidHistoryModel } = require('./schemas');
+const { UserModel, ItemModel, valschema } = require('./schemas');
 const { errorEmit } = require('./functions');
 
 let onlineArray = [];
@@ -85,11 +85,19 @@ io.on('connection', (socket) => {
     socket.emit('listEmit', (arr ? arr : [{}]));
   });
 
-  socket.on('listingSubmit', (submitObj) => {
-    const addListing = new ItemModel(submitObj);
-    // addListing.bidHistory = new BidHistoryModel({})
-    addListing.save();
+  socket.on('listingSubmit', async (submitObj) => {
+    try {
+      await valschema.validate(submitObj);
+      const addListing = new ItemModel(submitObj);
+      await addListing.save();
+    } catch (error) {
+      console.log('error ===', error);
+      errorEmit(socket, error);
+      return;
+    }
+
   });
+  // addListing.bidHistory = new BidHistoryModel({})
 
   socket.on('reqSnglItem', (id) => {
     ItemModel.findOne({ _id: { $eq: id } })
