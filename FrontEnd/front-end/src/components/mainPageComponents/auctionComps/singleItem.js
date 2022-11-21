@@ -25,9 +25,9 @@ function SingleItem({ compState, compSelect }) {
     connObj.connection.socket.emit('reqSnglItem', ItemConObj.selectedItem);
   }
 
-  // async function timerCalc() {
-  //   return await new Date(timer - (new Date(Date.now())));
-  // }
+  function timerCalc() {
+    return new Date(timer - (new Date(Date.now())));
+  }
 
   if (itemObj.bidHistory) itemObj.bidHistory.sort((a, b) => b.bidAmmount - a.bidAmmount)
 
@@ -45,7 +45,7 @@ function SingleItem({ compState, compSelect }) {
       <p>Posted by: {itemObj.postedBy}</p>
       <p>Highest bid: {itemObj.currentBid}</p>
       <p>Time left:
-        {/* {timerCalc().getUTCDay()} days {timerCalc().getUTCHours()} h {(timerCalc().getUTCMinutes())} min {timerCalc().getUTCSeconds()} s */}
+        {timerCalc().getUTCDay()} days {timerCalc().getUTCHours()} h {(timerCalc().getUTCMinutes())} min
       </p>
       <div>
         {itemObj.bidHistory ? itemObj.bidHistory.map((x, i) => {
@@ -58,8 +58,8 @@ function SingleItem({ compState, compSelect }) {
           )
         }) : (undefined)}
       </div>
-      <div>
-        <input type="number" name="" id="" placeholder='Ammount to bid' ref={bid} />
+      <div className='bidbox'>
+        <input type="number" name="" id="" placeholder='Ammount to bid' ref={bid} min='0' />
         <button onClick={attemptBid}>Submit a bid</button>
       </div>
     </div>

@@ -16,7 +16,7 @@ function Register() {
   }
 
   return (
-    <div>
+    <div className='loginBox'>
       <input type="text" placeholder='Username' ref={username} />
       <input type="password" placeholder='Password' ref={password1} />
       <input type="password" placeholder='Repeat password' ref={password2} />

@@ -10,7 +10,9 @@ function EntryPage() {
   return (
     <div>
       <EntryToolbar log={setIsItLogin} />
-      {isItLogin ? <Login /> : <Register />}
+      <div className='entryFlex'>
+        {isItLogin ? <Login /> : <Register />}
+      </div>
     </div>
   )
 }

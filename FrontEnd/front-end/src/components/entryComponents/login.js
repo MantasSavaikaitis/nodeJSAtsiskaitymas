@@ -22,7 +22,7 @@ function Login() {
     });
   }
   return (
-    <div>
+    <div className='loginBox'>
       <input type="text" placeholder='Username' ref={username} />
       <input type="password" placeholder='Password' ref={password} />
       <button onClick={loginAtempt}>Login</button>

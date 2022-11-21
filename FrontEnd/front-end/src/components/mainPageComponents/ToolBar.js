@@ -13,7 +13,7 @@ function LogoutBar({ compState, setCompState }) {
   }
 
   return (
-    <div>
+    <div className='entryToolbar flex tlbr'>
       <p>Loged in as: {connObj.connection.token.username}</p>
       <button onClick={logout}>log out</button>
       {compState === 'list' ? (<button onClick={() => setCompState('addListing')}>Add a Listing</button>) : (undefined)}

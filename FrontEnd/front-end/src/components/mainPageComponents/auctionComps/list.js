@@ -23,7 +23,7 @@ function List({ compState, compSelect }) {
 
   function SingleCard({ item }) {
     return (
-      <div onClick={() => selectSingleItem(item._id)}>
+      <div className='listitem' onClick={() => selectSingleItem(item._id)}>
         <img src={item.image} alt="" />
         <p>Title: {item.title}</p>
         <p>Time: {item.time.UTC}</p>
@@ -35,7 +35,7 @@ function List({ compState, compSelect }) {
   }
 
   return (
-    <div>{itemlist.map((x, i) => <SingleCard item={x} key={i} />)}</div>
+    <div className='flexlist'>{itemlist.map((x, i) => <SingleCard item={x} key={i} />)}</div>
   )
 }
 
