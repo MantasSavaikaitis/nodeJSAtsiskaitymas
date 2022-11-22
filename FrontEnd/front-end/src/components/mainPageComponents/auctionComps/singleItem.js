@@ -59,7 +59,7 @@ function SingleItem({ compState, compSelect }) {
       </div>
       <div className='bidbox'>
         <input type="number" name="" id="" placeholder='Ammount to bid' ref={bid} min='0' />
-        <button onClick={attemptBid}>Submit a bid</button>
+        <button onClick={attemptBid} disabled={timerCalc() <= 0 ? true : false}>Submit a bid</button>
       </div>
     </div>
   )
