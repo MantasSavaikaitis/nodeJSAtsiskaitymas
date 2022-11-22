@@ -11,18 +11,17 @@ function SingleItem({ compState, compSelect }) {
   const timer = new Date(itemObj.auctionDuration);
 
   connObj.connection.socket.on('snglItemEmit', (item) => {
-    setItemObj(item)
+    setItemObj({ ...item })
   })
 
-  function attemptBid() {
+  async function attemptBid() {
     console.log(bid);
-    connObj.connection.socket.emit('attemptBid', {
+    await connObj.connection.socket.emit('attemptBid', {
       id: ItemConObj.selectedItem,
       bidBy: connObj.connection.token.username,
       bidAmmount: Number(bid.current.value),
       bidDate: new Date(),
     });
-    connObj.connection.socket.emit('reqSnglItem', ItemConObj.selectedItem);
   }
 
   function timerCalc() {

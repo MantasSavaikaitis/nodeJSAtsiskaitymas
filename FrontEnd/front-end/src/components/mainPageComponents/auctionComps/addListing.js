@@ -26,16 +26,18 @@ function AddListing() {
   }
 
   return (
-    <div>
-      <input type="text" name="" id="" ref={title} placeholder='Title' />
-      <input type="number" name="" id="" ref={initPrice} placeholder='Starting Price' />
-      <input type="text" name="" id="" ref={imgLink} placeholder='image link' />
-      <select name="" id="" ref={auctionDuration}>
-        <option value="1">1 hour</option>
-        <option value="24">1 day</option>
-        <option value="168">1 week</option>
-      </select>
-      <button onClick={submitForm}>submit</button>
+    <div className='entryFlex'>
+      <div className='loginBox'>
+        <input type="text" name="" id="" ref={title} placeholder='Title' />
+        <input type="number" name="" id="" ref={initPrice} placeholder='Starting Price' />
+        <input type="text" name="" id="" ref={imgLink} placeholder='image link' />
+        <select name="" id="" ref={auctionDuration}>
+          <option value="1">1 hour</option>
+          <option value="24">1 day</option>
+          <option value="168">1 week</option>
+        </select>
+        <button onClick={submitForm}>submit</button>
+      </div>
     </div>
   )
 }

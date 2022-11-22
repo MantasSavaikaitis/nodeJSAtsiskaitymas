@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
     ItemModel.findOne({ _id: { $eq: id } })
       .then((item) => {
         if (item) {
-          console.log('render');
+          console.log('render', item);
           socket.emit('snglItemEmit', item)
         }
         else throw new Error('Issue with a listing')
@@ -120,6 +120,13 @@ io.on('connection', (socket) => {
     try {
       if (await ItemModel.findOne({ _id: { $eq: bidObj.id } }).then(x => x.currentBid < item.bidAmmount)) {
         await ItemModel.findOneAndUpdate({ _id: { $eq: bidObj.id } }, { $push: { bidHistory: item }, currentBid: item.bidAmmount, });
+        socket.emit('snglItemEmit', await ItemModel.findOne({ _id: { $eq: bidObj.id } }).then((item) => {
+          if (item) {
+            console.log('render', item);
+            return item;
+          }
+          else throw new Error('Issue with a listing')
+        }))
       } else throw new Error('bid is too low');
     } catch (error) {
       errorEmit(socket, error);
